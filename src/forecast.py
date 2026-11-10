@@ -115,7 +115,38 @@ def main():
     pd.DataFrame({"week_ending": future.index.date, "forecast_revenue_brl": future.round(0).values}) \
         .to_csv(OUT / "forecast_next_8_weeks.csv", index=False)
     print("\nNext 8 weeks forecast saved to outputs/forecast_next_8_weeks.csv")
+
+    # ---- 4) monthly planning forecast, rolling one-step-ahead backtest
+    monthly_backtest(con)
     con.close()
+
+
+def monthly_backtest(con, test_months=6):
+    """How the forecast is used in practice: at the start of each month, forecast that month
+    using only the history available then. Roll forward month by month over the last 6 months
+    (Mar - Aug 2018), which the models only see after they have forecast them."""
+    df = pd.read_sql_query("SELECT order_date, revenue FROM fact_sales", con, parse_dates=["order_date"])
+    m = df.set_index("order_date")["revenue"].resample("MS").sum()
+    m = m[(m.index >= "2017-01-01") & (m.index <= "2018-08-01")]
+    first_test = len(m) - test_months
+
+    models = {
+        "simple exponential smoothing": lambda h: ExponentialSmoothing(h, initialization_method="estimated").fit().forecast(1).values[0],
+        "3-month moving average": lambda h: h.iloc[-3:].mean(),
+        "naive (next month = this month)": lambda h: h.iloc[-1],
+    }
+    rows, detail = [], {"month": m.index[first_test:].strftime("%Y-%m"), "actual_brl": m.iloc[first_test:].round(0).values}
+    for name, fn in models.items():
+        preds = np.array([fn(m.iloc[:i]) for i in range(first_test, len(m))])
+        actual = m.iloc[first_test:].values
+        rows.append({"model": name, "mape_pct": round(mape(actual, preds), 2), "wape_pct": round(wape(actual, preds), 2),
+                     "accuracy_pct (100-WAPE)": round(100 - wape(actual, preds), 2)})
+        detail[name] = preds.round(0)
+    res = pd.DataFrame(rows).sort_values("wape_pct")
+    res.to_csv(OUT / "forecast_monthly_comparison.csv", index=False)
+    pd.DataFrame(detail).to_csv(OUT / "forecast_monthly_backtest_detail.csv", index=False)
+    print(f"\nMonthly revenue - rolling one-step-ahead backtest, last {test_months} months")
+    print(res.to_string(index=False))
 
 
 if __name__ == "__main__":

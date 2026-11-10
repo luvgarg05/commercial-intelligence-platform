@@ -18,7 +18,7 @@ cleaning and forecasting, Power BI for the dashboard.
 | 3 | Fast growth across categories | Watches & gifts revenue grew **308%** from H1 2017 to H1 2018; health & beauty **234%** | Candidates for more seller acquisition |
 | 4 | Late deliveries destroy satisfaction | **8.1%** of orders arrive late; their average review is **2.57 vs 4.30** for on-time orders, and **54%** of late orders get 1–2 star reviews (vs 9.2%) | Fixing late deliveries is the biggest lever on ratings |
 | 5 | Very low repeat purchase | Only **3.0%** of customers ordered more than once | Retention programmes (loyalty, remarketing) are the main growth gap |
-| 6 | Weekly revenue can be forecast with ~83% accuracy | Best model WAPE **16.5%** on a 12-week hold-out, vs 38.4% for the naive baseline | Usable for short-term demand and staffing planning |
+| 6 | Revenue is forecastable for planning | Monthly forecasts: **~94% accuracy** (WAPE 5.4–5.9%) in a 6-month rolling backtest; weekly: 83.5% (WAPE 16.5%) on a 12-week hold-out vs 61.6% naive | Monthly figures are reliable for budgeting; weekly figures are noisier (promotions, Black Friday, the May 2018 strike) |
 
 Average order value: **R$159.83**. Average review: **4.16 / 5**.
 A sharp dip in the week ending 27 May 2018 coincides with the nationwide truck drivers' strike in Brazil in late May 2018, a plausible cause (not tested).
@@ -30,6 +30,19 @@ A sharp dip in the week ending 27 May 2018 coincides with the nationwide truck d
 - Metrics: **WAPE** (total absolute error ÷ total actual revenue) and MAPE. Accuracy = 100 − WAPE.
 - Also backtested for the top 5 categories: best WAPE 15–22% per category (`outputs/forecast_by_category.csv`).
 - The 8-week forward forecast uses Holt (it models trend; the moving average forecasts a flat line).
+
+**Monthly planning forecast (rolling one-step-ahead).** At the start of each month, forecast that month
+using only data available then; roll forward over the last 6 months (Mar–Aug 2018).
+
+| Model | WAPE | Accuracy |
+|---|---|---|
+| Naive (next month = this month) | 5.39% | 94.6% |
+| Simple exponential smoothing | 5.88% | 94.1% |
+| 3-month moving average | 8.45% | 91.6% |
+
+Honest reading: revenue plateaued in 2018 (about R$1.0–1.13M a month), so the naive rule was already
+hard to beat; smoothing matched it but did not improve on it. Only 6 test months, so treat these as indicative.
+Month-by-month predictions: `outputs/forecast_monthly_backtest_detail.csv`.
 
 ## Project structure
 ```

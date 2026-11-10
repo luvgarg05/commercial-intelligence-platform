@@ -1,0 +1,4 @@
+model,mape_pct,wape_pct,accuracy_pct (100-WAPE)
+naive (next month = this month),5.43,5.39,94.61
+simple exponential smoothing,5.9,5.88,94.12
+3-month moving average,8.45,8.45,91.55
