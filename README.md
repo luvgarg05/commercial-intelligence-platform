@@ -23,6 +23,22 @@ cleaning and forecasting, Power BI for the dashboard.
 Average order value: **R$159.83**. Average review: **4.16 / 5**.
 A sharp dip in the week ending 27 May 2018 coincides with the nationwide truck drivers' strike in Brazil in late May 2018, a plausible cause (not tested).
 
+## Power BI dashboard
+3 pages, 12 visuals, 10 DAX measures (built in Power BI Desktop; guide in `powerbi/POWERBI_GUIDE.md`).
+
+**Executive Overview** – revenue, orders, average order value, repeat-customer rate, monthly trend, category and date slicers
+![Executive Overview](powerbi/screenshots/page1_overview.png)
+
+**Regions & Categories** – revenue by state, top 10 categories, category × month heatmap
+![Regions & Categories](powerbi/screenshots/page2_regions_categories.png)
+
+**Customer Experience & Forecast** – late-delivery rate, delivery time, rating on-time vs late, 8-week revenue forecast
+![Customer Experience & Forecast](powerbi/screenshots/page3_experience_forecast.png)
+
+DAX notes: `Repeat Customer %` is computed from the fact table with `SUMMARIZE` so it responds to slicers;
+`Avg Review` uses `TREATAS` to pass the visible orders to the review table (filters don't flow from the
+fact table to a dimension on their own).
+
 ## Forecasting method
 - Weekly revenue, complete weeks only (the final week of Aug 2018 is cut short by the data collection end date).
 - Last 12 weeks held out; models never see them during fitting.
