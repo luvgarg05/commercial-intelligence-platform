@@ -24,7 +24,7 @@ Average order value: **R$159.83**. Average review: **4.16 / 5**.
 A sharp dip in the week ending 27 May 2018 coincides with the nationwide truck drivers' strike in Brazil in late May 2018, a plausible cause (not tested).
 
 ## Power BI dashboard
-3 pages, 12 visuals, 10 DAX measures (built in Power BI Desktop; guide in `powerbi/POWERBI_GUIDE.md`).
+3 pages, 12 visuals, 10 DAX measures. Open `powerbi/Commercial_Intelligence.pbix` in Power BI Desktop (free); build guide in `powerbi/POWERBI_GUIDE.md`.
 
 **Executive Overview** – revenue, orders, average order value, repeat-customer rate, monthly trend, category and date slicers
 ![Executive Overview](powerbi/screenshots/page1_overview.png)
