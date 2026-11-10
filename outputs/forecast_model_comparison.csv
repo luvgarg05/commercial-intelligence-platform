@@ -1,0 +1,4 @@
+model,mape_pct,wape_pct,accuracy_pct (100-WAPE)
+4-week moving average,18.24,16.49,83.51
+holt (damped trend),21.65,18.76,81.24
+naive (last week repeats),36.33,38.44,61.56

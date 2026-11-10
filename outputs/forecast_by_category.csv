@@ -1,0 +1,6 @@
+category,holt_wape_pct,naive_wape_pct,best_model,best_wape_pct
+health_beauty,21.82,61.58,holt (damped trend),21.82
+watches_gifts,15.16,47.3,holt (damped trend),15.16
+bed_bath_table,18.22,25.21,4-week moving average,18.05
+sports_leisure,22.26,49.45,4-week moving average,22.16
+computers_accessories,21.54,24.79,holt (damped trend),21.54
